@@ -10,7 +10,7 @@ const mySchema = new Schema({
 })
 
 // quiero que el esquema funcione sobre lo que voy a mandar a la base de datos
-const model = mongoose.model('data', mySchema)
+const model = mongoose.model('messages', mySchema)
 
 module.exports = model
 

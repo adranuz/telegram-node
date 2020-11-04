@@ -21,8 +21,19 @@ function listMessages() { return new Promise((resolve, reject) => {
   resolve(store.list())
 })}
 
+function updateMessage(id, message) { return new Promise( async (resolve, reject) => {
+  // console.log(id, message)
+  if (!id || !message){
+    reject('Invalid data')
+    return false
+  }
+  const result = await store.edit(id, message)
+  resolve(result)
+})}
+
 
 module.exports = {
   addMessage,
   listMessages,
+  updateMessage,
 }
