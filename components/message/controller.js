@@ -1,5 +1,10 @@
 const store = require('./store')
 
+function listMessages(user) { return new Promise((resolve, reject) => {
+  // console.log(user)
+  resolve(store.list(user))
+})}
+
 function addMessage({ user, message }){ return new Promise((resolve, reject) => {
     if (!user | !message) {
       console.error('[messageController] No hay usuario o mensaje')
@@ -14,15 +19,9 @@ function addMessage({ user, message }){ return new Promise((resolve, reject) => 
     }
     store.add(messageData)
     resolve(messageData)
-
 })}
 
-function listMessages() { return new Promise((resolve, reject) => {
-  resolve(store.list())
-})}
-
-function updateMessage(id, message) { return new Promise( async (resolve, reject) => {
-  // console.log(id, message)
+function updateMessage({id, message}) { return new Promise( async (resolve, reject) => {
   if (!id || !message){
     reject('Invalid data')
     return false

@@ -5,7 +5,10 @@ const router = express.Router()
 
 // app.use('/', (req, res) => res.send('Hola'))
 router.get('/', (req, res) => {
-  controller.listMessages()
+  // data
+  const data = req.query.user || null
+  //controller
+  controller.listMessages(data)
     .then((data) => {
       response.success(req, res, data, 200)
     })
@@ -15,7 +18,10 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-  controller.addMessage(req.body)
+  // data
+  const data = req.body
+  //controller
+  controller.addMessage(data)
   .then((data) => {
     response.success(req, res, data, 201)
   })
@@ -25,7 +31,13 @@ router.post('/', (req, res) => {
 })
 
 router.patch('/:id',(req, res) => {
-  controller.updateMessage(req.params.id, req.body.message)
+  //data
+  const data = {
+    id: req.params.id,
+    message: req.body.message,
+  }
+  //controller
+  controller.updateMessage(data)
   .then((data) => {
     response.success(req, res, data, 200)
   })
@@ -34,5 +46,7 @@ router.patch('/:id',(req, res) => {
   })
   // res.send('ok') //no se pueden enviar dos cosas a la vez
 })
+
+
 
 module.exports = router

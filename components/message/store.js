@@ -17,6 +17,17 @@ db.Promise = global.Promise
   
 
 
+async function listMessages(user) {
+  let filter = {} 
+  if (user != null) {
+    user = new RegExp(user, "i") //toma user y lo hace en may o min
+    filter = { 
+      user: user
+    }
+  }
+  const messages = await Model.find(filter) 
+  return messages
+}
 
 
 function addMessage(message) {
@@ -25,22 +36,11 @@ function addMessage(message) {
   myMessage.save()
 }
 
-async function listMessages() { 
-  const messages = await Model.find() 
-  return messages
-}
 
 async function updateMessage(id, message) {
   const myMessage = await Model.findById(id)
-  // console.log(id)
-  // console.log(message)
-  // const myMessage = await Model.findOne({ _id: id })
-
   myMessage.message = message
-  console.log(myMessage)
   const result = await myMessage.save()
-  // console.log(myMessage)
-  // const response = await Model.findByIdAndUpdate(id, {message: message})
   return result
 }
 
