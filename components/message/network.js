@@ -3,12 +3,11 @@ const response = require('../../network/response')
 const controller = require('./controller')
 const router = express.Router()
 
+
+
 // app.use('/', (req, res) => res.send('Hola'))
 router.get('/', (req, res) => {
-  // data
-  const data = req.query.user || null
-  //controller
-  controller.listMessages(data)
+  controller.listMessages(req.body)
     .then((data) => {
       response.success(req, res, data, 200)
     })
@@ -17,11 +16,11 @@ router.get('/', (req, res) => {
     })
 })
 
+
+
 router.post('/', (req, res) => {
-  // data
-  const data = req.body
   //controller
-  controller.addMessage(data)
+  controller.addMessage(req.body)
   .then((data) => {
     response.success(req, res, data, 201)
   })
@@ -30,23 +29,30 @@ router.post('/', (req, res) => {
   })
 })
 
-router.patch('/:id',(req, res) => {
-  //data
-  const data = {
-    id: req.params.id,
-    message: req.body.message,
-  }
-  //controller
-  controller.updateMessage(data)
+
+
+router.patch('/:id', (req, res) => {
+  controller.updateMessage(req.params.id, req.body.message)
   .then((data) => {
     response.success(req, res, data, 200)
   })
   .catch((err) => {
     response.error(req, res, 'Información invalida', 404, err)
   })
-  // res.send('ok') //no se pueden enviar dos cosas a la vez
+  
 })
 
+
+
+router.delete('/:id', (req, res) => {
+  controller.deleteMessage(req.params.id)
+  .then((data) => {
+    response.success(req, res, data, 200)
+  })
+  .catch((err) => {
+    response.error(req, res, 'Informacion inválida', 404, err)
+  })
+})
 
 
 module.exports = router

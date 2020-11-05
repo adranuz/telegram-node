@@ -7,7 +7,7 @@ const {DB_USER,DB_PASSWORD,DB_HOST,DB_NAME} = process.env
 
 db.Promise = global.Promise
 // db.connect('mongodb+srv://db_user:YjigYZawJCD2na3P@cluster0.ylbkd.mongodb.net/db_chat?retryWrites=true&w=majority', {
-  db.connect(`mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}?retryWrites=true&w=majority`, {
+db.connect(`mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
@@ -17,14 +17,10 @@ db.Promise = global.Promise
   
 
 
-async function listMessages(user) {
-  let filter = {} 
-  if (user != null) {
-    user = new RegExp(user, "i") //toma user y lo hace en may o min
-    filter = { 
-      user: user
-    }
-  }
+async function listMessages(data) {
+  let filter = {}
+  data._id && (filter._id = data._id)
+  data.user && (filter.user = new RegExp(data.user, "i")) //toma user y lo hace en may o min
   const messages = await Model.find(filter) 
   return messages
 }
@@ -44,11 +40,18 @@ async function updateMessage(id, message) {
   return result
 }
 
+
+async function deleteMessage(id) {
+  const response = Model.deleteOne({ _id: id })
+  return (response)
+}
+
+
 module.exports = {
   add: addMessage,
   list: listMessages,
   edit: updateMessage,
+  delete: deleteMessage,
   // get: getMessage,
-  // delete: deleteMessage,
   // etc 
 }
